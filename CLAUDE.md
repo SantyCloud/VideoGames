@@ -1,7 +1,7 @@
 # Nuestra Partida: contexto del proyecto
 
 Página web de regalo que Santy le hace a su novia. Tiene estilo de videojuego pixel art en rosa pastel. Su cumpleaños es el **1 de octubre**, y esa es la fecha límite.
-Se publica con **GitHub Pages** desde el repo `SantyCloud/videogames` → https://santycloud.github.io/videogames
+Se publica con **GitHub Pages** desde el repo `SantyCloud/VideoGames` (rama `main`, carpeta raíz) → https://santycloud.github.io/VideoGames/ — ojo con las mayúsculas, Pages distingue el caso y la versión en minúsculas da 404
 
 Santy es programador, así que puedes hablarle en términos técnicos. Escríbele en español.
 
@@ -85,7 +85,8 @@ La carta y las razones que vienen por defecto son de ejemplo. Santy tiene que es
 - [ ] Subir las fotos a `fotos/` y registrarlas en `CONFIG.fotos` con su pie de foto
 - [ ] Subir los audios a `audios/` y registrarlos en `CONFIG.audios`
 - [ ] Carta, razones y mensajes escritos por Santy
-- [ ] Activar GitHub Pages (Settings → Pages → Branch `main` / root) y verificar el link en el celular
+- [x] Activar GitHub Pages (rama `main` / root) — hecho, el sitio responde 200
+- [ ] Verificar el link en el celular: https://santycloud.github.io/VideoGames/
 - [ ] Probar en iPhone y Android: música, audios, velas y el botón "No"
 
 ## Ideas extra si Santy pide más
