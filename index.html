@@ -88,7 +88,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-visi
 .final-btn[disabled]{background:#eee;color:var(--ink2);cursor:not-allowed}
 
 /* photos */
-.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:18px;padding:6px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:18px;padding:6px}
 .polaroid{background:#fff;border:3px solid var(--ink);padding:10px 10px 8px;box-shadow:4px 5px 0 var(--accent2);transform:rotate(var(--r,0deg));transition:transform .15s;border-radius:4px}
 .polaroid:hover{transform:rotate(0) scale(1.03)}
 .polaroid img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center 25%;border:2px solid var(--ink)}
@@ -103,7 +103,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-visi
 .lightbox figcaption{font-family:var(--mono);font-size:24px;text-align:center;margin-top:8px}
 
 /* voices */
-.tapes{display:grid;gap:14px}
+.tapes{display:grid;gap:14px;max-width:560px;margin-inline:auto}
 .tape{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;border:4px solid var(--ink);border-radius:14px;padding:12px 14px;background:var(--lilac)}
 .reels{width:74px;height:44px;border:3px solid var(--ink);border-radius:8px;background:#fff;display:flex;justify-content:space-around;align-items:center}
 .reels span{width:20px;height:20px;border-radius:50%;border:3px solid var(--ink);background:repeating-conic-gradient(var(--ink) 0 20deg,#fff 20deg 60deg)}
@@ -145,6 +145,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-visi
 .candle{width:16px;height:48px;background:repeating-linear-gradient(180deg,#fff 0 8px,var(--sky) 8px 16px);border:3px solid var(--ink);position:relative;padding:0;border-radius:2px}
 .candle .flame{position:absolute;left:50%;top:-24px;width:14px;height:20px;transform:translateX(-50%);background:var(--butter);border:3px solid #FF9A3C;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;animation:flick .5s steps(2) infinite}
 .candle.out .flame{display:none}
+.candle::before{content:"";position:absolute;left:-10px;right:-10px;top:-20px;bottom:-14px}
 .candle.out::after{content:"~";position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:22px;color:var(--ink2)}
 @keyframes flick{50%{transform:translateX(-50%) scaleY(.85)}}
 .tier{border:4px solid var(--ink);border-radius:8px}
@@ -216,11 +217,11 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-visi
   .tape{grid-template-columns:1fr auto}
   .tape .reels{display:none}
   .level{grid-template-columns:52px 1fr}
+  /* el boton de musica va absoluto sobre la barra: hay que reservarle el hueco
+     o un apodo largo queda tapado debajo. Hasta 520px, que cubre los Pro Max de 430 */
+  .topbar{padding:12px 52px 10px 12px}
 }
 @media (max-width:420px){
-  /* el boton de musica va absoluto sobre la barra: hay que reservarle el hueco
-     o un apodo largo queda tapado debajo */
-  .topbar{padding:12px 52px 10px 12px}
   .pill{font-size:9px;padding:8px 10px}
   /* el margen del papel se acerca para no comerse el ancho de lectura */
   .paper{padding:22px 14px 22px 32px;
@@ -556,10 +557,10 @@ function renderCapsules(){
 
 /* ---------- cake ---------- */
 function renderCandles(){
- var box=$('#candles');box.innerHTML='';var left=5;$('#cake-done').hidden=true;$('#cake-lead').hidden=false;
+ var box=$('#candles');box.innerHTML='';var left=5;$('#cake-done').hidden=true;$('#cake-lead').hidden=false;$('#cake-lead').style.visibility='';
  for(var i=0;i<5;i++){(function(){
   var c=document.createElement('button');c.type='button';c.className='candle';c.setAttribute('aria-label','Apagar vela');c.innerHTML='<span class="flame"></span>';
-  c.addEventListener('click',function(){if(c.classList.contains('out'))return;c.classList.add('out');left--;if(!left){$('#cake-lead').hidden=true;$('#bday-title').textContent=STATE.bday||'¡Feliz cumpleaños!';$('#wish').textContent=STATE.wish||'';$('#cake-done').hidden=false;burst(160)}});
+  c.addEventListener('click',function(){if(c.classList.contains('out'))return;c.classList.add('out');left--;if(!left){$('#cake-lead').style.visibility='hidden';$('#bday-title').textContent=STATE.bday||'¡Feliz cumpleaños!';$('#wish').textContent=STATE.wish||'';$('#cake-done').hidden=false;burst(160)}});
   box.appendChild(c)})()}
 }
 
@@ -580,8 +581,10 @@ $('#final-btn').addEventListener('click',function(){if(this.disabled)return;$('#
 /* runaway "No" */
 var no=$('#no');
 function flee(e){if(e)e.preventDefault();var box=$('#yn').getBoundingClientRect(),w=no.offsetWidth,h=no.offsetHeight;
- var x=Math.random()*(box.width-w)-(no.offsetLeft),y=(Math.random()-.5)*50;no.style.transform='translate('+x+'px,'+y+'px) scale('+(.6+Math.random()*.3)+')';
- var yes=$('#yes');var s=parseFloat(yes.dataset.s||'1')+.12;yes.dataset.s=s;yes.style.transform='scale('+Math.min(s,1.8)+')'}
+ var yes=$('#yes'),yr=yes.getBoundingClientRect();
+ var min=Math.max(0,yr.right-box.left+10),max=box.width-w;if(min>max)min=max;
+ var x=min+Math.random()*(max-min)-(no.offsetLeft),y=(Math.random()-.5)*50;no.style.transform='translate('+x+'px,'+y+'px) scale('+(.6+Math.random()*.3)+')';
+ var s=parseFloat(yes.dataset.s||'1')+.12;yes.dataset.s=s;yes.style.transform='scale('+Math.min(s,1.8)+')'}
 no.addEventListener('mouseenter',flee);no.addEventListener('touchstart',flee,{passive:false});no.addEventListener('click',flee);
 $('#yes').addEventListener('click',function(){$('#yes-msg').hidden=false;burst(220,true)});
 

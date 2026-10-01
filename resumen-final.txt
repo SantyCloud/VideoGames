@@ -1,0 +1,64 @@
+===== CONFIRMADOS: 8 =====
+
+[ALTA] riesgo_del_arreglo=alto  (accesibilidad)
+  Pausar un audio y volver a darle play lo reinicia desde cero
+  donde: index.html:498-502, handler click de .play dentro de renderTapes()
+  arreglo: Cambiar la primera línea del handler a que cubra los dos estados del mismo casete: `if(currentTape&&currentTape.el===el){voice.paused?voice.play().catch(function(){}):voice.pause();return}`. El resto del handler (cambiar de casete) queda igual.
+
+[ALTA] riesgo_del_arreglo=bajo  (regresiones)
+  El botón "No" cae encima del "Sí" en 2 de cada 3 huidas y se traga el toque
+  donde: index.html:582-585, función flee() (listeners de #no: mouseenter / touchstart / click)
+  arreglo: En flee(), limitar el destino a la derecha del "Sí": var yes=$('#yes'),yr=yes.getBoundingClientRect(),min=Math.max(0,yr.right-box.left+10),max=box.width-w; if(min>max)min=max; var x=min+Math.random()*(max-min)-no.offsetLeft; (el resto igual). Sigue sin salirse
+
+[ALTA] riesgo_del_arreglo=ninguno  (escritorio)
+  La galería de fotos deja una columna vacía a la derecha en escritorio
+  donde: index.html:91 — selector .gallery (grid-template-columns: repeat(auto-fill, minmax(170px,1fr)))
+  arreglo: Cambiar auto-fill por auto-fit en esa única línea: grid-template-columns:repeat(auto-fit,minmax(170px,1fr)). Verificado en vivo: a 375px y 430px sigue siendo 1 columna (295px / 350px, idéntico a hoy), a 768px siguen siendo 3 columnas, y a 1280/1920 pasa a 3 pi
+
+[ALTA] riesgo_del_arreglo=bajo  (movil)
+  Nivel 5: al apagar la última vela el pastel salta y el humo "~" queda encima del título
+  donde: index.html:562 (handler de click de `.candle` dentro de `renderCandles`) y index.html:148 (`.candle.out::after
+  arreglo: En index.html:562 cambiar `$('#cake-lead').hidden=true;` por `$('#cake-lead').style.visibility='hidden';` para que el párrafo siga ocupando su espacio y el pastel no suba. Y en index.html:559, donde se resetea (`$('#cake-lead').hidden=false`), añadir `$('#cake
+
+[MEDIA] riesgo_del_arreglo=ninguno  (movil)
+  Las velitas son un objetivo táctil de 16×48 px, imposible de atinar con el dedo
+  donde: index.html:145 — `.candle{width:16px;height:48px;...}`
+  arreglo: Añadir un área táctil invisible sin tocar el dibujo. `.candle` ya es `position:relative` y su `::after` está ocupado por el humo, así que `::before` está libre: `.candle::before{content:"";position:absolute;left:-12px;right:-12px;top:-20px;bottom:-14px}`. Qued
+
+[MEDIA] riesgo_del_arreglo=ninguno  (movil)
+  Entre 421px y ~440px (iPhone Pro Max = 430) la píldora "MI PRINCESA" casi toca el botón ♪
+  donde: index.html:220-223 — `@media (max-width:420px){ .topbar{padding:12px 52px 10px 12px} }`
+  arreglo: Mover solo la regla de la topbar al bloque que ya existe en index.html:213: añadir `.topbar{padding:12px 52px 10px 12px}` dentro de `@media (max-width:520px)` y quitarla del bloque de 420px (ahí se queda solo `.pill{font-size:9px;padding:8px 10px}`).
+
+[MEDIA] riesgo_del_arreglo=ninguno  (escritorio)
+  Los casetes del Nivel 2 se estiran a 836px y la barra de progreso queda larguísima
+  donde: index.html:106 — selector .tapes (display:grid;gap:14px), afecta a .tape de index.html:107
+  arreglo: Añadir a .tapes en la línea 106: max-width:560px;margin-inline:auto → .tapes{display:grid;gap:14px;max-width:560px;margin-inline:auto}. Verificado en vivo: a 375px el contenedor mide 307px y a 430px mide 362px, o sea por debajo del tope, así que en móvil no ca
+
+[MEDIA] riesgo_del_arreglo=alto  (regresiones)
+  Pausar un mensaje de voz y volver a darle play lo reinicia desde el segundo 0
+  donde: index.html:498-502, listener click del botón .play en renderTapes()
+  arreglo: Cambiar la primera línea del handler por: if(currentTape&&currentTape.el===el){ if(voice.paused){voice.play().catch(function(){})} else {voice.pause()} return } — tras 'ended' play() reinicia solo desde 0, que es lo correcto.
+
+
+===== DESCARTADOS: 0 =====
+
+
+===== BAJA, SIN VERIFICAR: 17 =====
+ - [movil] El botón "◀ Menú" mide 36px de alto (<44) en las 7 pantallas de nivel
+ - [movil] El botón de música ♪ mide 40×40 px (<44)
+ - [movil] Nivel 4: a 375px las razones se parten en 4-5 líneas con palabras sueltas
+ - [movil] Nivel 2: la barra de progreso del casete anterior se queda pintada al cambiar de audio
+ - [regresiones] Si el player de YouTube aún no cargó, el ducking se pierde y la música entra a volumen completo encima del audio
+ - [regresiones] El Nivel 4 y el Nivel 5 se reinician por completo cada vez que se vuelve a entrar
+ - [regresiones] Al cambiar de casete, la barra de progreso del audio anterior se queda congelada a medias
+ - [accesibilidad] Los 5 botones de audio tienen la misma etiqueta y nunca dicen "Pausar"
+ - [accesibilidad] El alt de cada foto repite el pie de foto que ya está debajo
+ - [accesibilidad] Los canvas de corazón se cuelan en la lectura de pantalla sin aria-hidden
+ - [accesibilidad] Al cambiar de pantalla se pierde el foco y nada se anuncia
+ - [carga] El póster del video (32 KB) y la petición del mp4 salen en el arranque, con el Nivel 6 oculto
+ - [carga] Cada primera visita se trae 9,4 KB de la página de error 404 de GitHub por el favicon
+ - [visual] El texto introductorio del Nivel 5 está centrado; en el resto de niveles va alineado a la izquierda
+ - [visual] En la pantalla final el botón "Menú" deja 44px de aire; en los niveles son 16px
+ - [visual] Colores a pelo fuera de la paleta en varios puntos, teniendo la variable CSS equivalente
+ - [visual] El botón "Sí" del final es visualmente idéntico al "No": los dos grises y sin color de acento
