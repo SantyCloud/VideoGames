@@ -7,12 +7,12 @@
 window.CONFIG = {
   titulo: "Nuestra Partida",
   p1: "Santy",            // Player 1 (tú)
-  p2: "Mi amor",          // Player 2 (ella)
+  p2: "Mi princesa",      // Player 2 (ella)
   juntosDesde: "2025-08-01",  // 1 de agosto de 2025, el dia que se hicieron novios
 
   // Canción de fondo: pega el link de YouTube (acepta youtu.be, watch?v=, shorts)
   // Si quieres que empiece en un segundo específico, agrega &t=30 al link
-  youtube: "",
+  youtube: "https://youtu.be/cE6wxDqdOV0",
   // (opcional) en vez de YouTube, un mp3 propio: "cancion.mp3"
   cancionMp3: "",
 
