@@ -31,6 +31,9 @@ window.CONFIG = {
     { src: "audios/5.m4a", title: "Santy enojado", date: "" },
   ],
 
+  // Nivel 6 · el video que hizo ella (déjalo vacío si no hay)
+  video: { src: "", poster: "", caption: "" },
+
   // Nivel 3 · la carta (usa \n para saltos de línea, o `backticks` para escribir varias líneas)
   carta: `Mi vida:
 

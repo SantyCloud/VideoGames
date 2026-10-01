@@ -93,6 +93,9 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-visi
 .polaroid:hover{transform:rotate(0) scale(1.03)}
 .polaroid img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center 25%;border:2px solid var(--ink)}
 .polaroid p{margin:8px 0 0;font-family:var(--mono);font-size:20px;line-height:1.1;text-align:center;min-height:22px}
+.clipwrap{display:grid;justify-items:center;gap:12px}
+.clip{width:100%;max-width:520px;display:block;border:4px solid var(--ink);border-radius:8px;box-shadow:0 5px 0 var(--ink);background:#000}
+.clipcap{margin:0;font-family:var(--mono);font-size:22px;color:var(--ink2);text-align:center}
 .empty{border:3px dashed var(--ink2);border-radius:14px;padding:26px;text-align:center;color:var(--ink2);font-family:var(--mono);font-size:22px;line-height:1.2}
 .lightbox{position:fixed;inset:0;background:rgba(91,42,74,.82);display:grid;place-items:center;z-index:50;padding:20px}
 .lightbox figure{margin:0;background:#fff;border:4px solid var(--ink);padding:12px;max-width:min(92vw,720px);border-radius:6px}
@@ -275,14 +278,14 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-visi
   <!-- MENU -->
   <section class="screen" id="s-menu" hidden>
     <h2 class="screen-title">Selecciona un nivel</h2>
-    <p class="lead">Cada nivel guarda un pedacito de nosotros. Completa los cinco para desbloquear el final.</p>
+    <p class="lead">Cada nivel guarda un pedacito de nosotros. Completa los seis para desbloquear el final.</p>
     <div class="hud">
       <div class="stat"><div class="k">Días juntos</div><div class="v" id="days">—</div></div>
       <div class="stat"><div class="k">Tiempo en partida</div><div class="v" id="clock"><small>—</small></div></div>
       <div class="stat"><div class="k">HP de amor</div><div class="hp" id="hp"></div><div class="v" style="font-size:22px">∞ / ∞</div></div>
     </div>
     <div class="levels" id="levels"></div>
-    <button type="button" class="final-btn" id="final-btn" disabled>🔒 Final bloqueado · 0/5</button>
+    <button type="button" class="final-btn" id="final-btn" disabled>🔒 Final bloqueado · 0/6</button>
   </section>
 
   <!-- LEVEL: PHOTOS -->
@@ -344,6 +347,14 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-visi
   </section>
 
   <!-- END -->
+  <!-- LEVEL: CLIPS -->
+  <section class="screen" id="s-clips" hidden>
+    <button type="button" class="back" data-back>◀ Menú</button>
+    <h2 class="screen-title">Nivel 6 · Nuestras partidas</h2>
+    <p class="lead">El video que hiciste tú. La música baja sola mientras lo ves.</p>
+    <div class="clipwrap" id="clipbox"></div>
+  </section>
+
   <section class="screen" id="s-end" hidden>
     <button type="button" class="back" data-back style="justify-self:start">◀ Menú</button>
     <p class="gc">¡Juego completado!</p>
@@ -399,7 +410,8 @@ var LEVELS=[
  {id:'voices',name:'Mensajes de voz',sub:'Audios que grabé para ti',c:'var(--lilac)'},
  {id:'letter',name:'La carta',sub:'Ábrela despacio',c:'var(--butter)'},
  {id:'reasons',name:'Razones',sub:'Por qué te amo',c:'var(--sky)'},
- {id:'cake',name:'Sopla las velitas',sub:'Nivel cumpleaños',c:'var(--accent2)'}
+ {id:'cake',name:'Sopla las velitas',sub:'Nivel cumpleaños',c:'var(--accent2)'},
+ {id:'clips',name:'Nuestras partidas',sub:'El video que hiciste tú',c:'var(--accent)'}
 ];
 var visited=store('np-visited')||{};
 var isAdmin=false;
@@ -414,7 +426,7 @@ function renderAll(){
  document.title=STATE.title||'Nuestra Partida';
  var d=sinceDate();
  $('[data-since-short]').innerHTML=d?('desde<br>'+d.toLocaleDateString('es',{day:'numeric',month:'short',year:'numeric'})):'♥';
- renderMenu();renderGallery();renderTapes();renderCapsules();renderCandles();
+ renderMenu();renderGallery();renderTapes();renderCapsules();renderCandles();renderClips();
 }
 
 function renderMenu(){
@@ -427,7 +439,7 @@ function renderMenu(){
  var n=LEVELS.filter(function(L){return visited[L.id]}).length;
  var fb=$('#final-btn');fb.disabled=n<LEVELS.length;
  fb.textContent=n<LEVELS.length?('🔒 Final bloqueado · '+n+'/'+LEVELS.length):'♥ Final desbloqueado · jugar';
- var hp=$('#hp');if(!hp.childElementCount){for(var k=0;k<5;k++){var c=document.createElement('canvas');c.width=7;c.height=6;draw(c,SPR.heart);hp.appendChild(c)}}
+ var hp=$('#hp');if(!hp.childElementCount){for(var k=0;k<LEVELS.length;k++){var c=document.createElement('canvas');c.width=7;c.height=6;draw(c,SPR.heart);hp.appendChild(c)}}
  tick();
 }
 function pad(n,l){n=String(n);while(n.length<(l||2))n='0'+n;return n}
@@ -496,6 +508,24 @@ voice.addEventListener('pause',function(){if(currentTape){currentTape.el.classLi
 voice.addEventListener('ended',function(){if(currentTape)currentTape.bar.style.width='100%'});
 voice.addEventListener('timeupdate',function(){if(currentTape&&voice.duration)currentTape.bar.style.width=(voice.currentTime/voice.duration*100)+'%'});
 
+/* ---------- clips ---------- */
+var clipEl=null;
+function renderClips(){
+ var box=$('#clipbox');box.innerHTML='';clipEl=null;
+ var v=STATE.video||{};
+ if(!v.src){box.innerHTML='<div class="empty">El video está renderizando en otra dimensión… vuelve pronto ♥</div>';return}
+ var el=document.createElement('video');
+ el.className='clip';el.controls=true;el.preload='metadata';
+ el.playsInline=true;el.setAttribute('playsinline','');el.setAttribute('webkit-playsinline','');
+ if(v.poster)el.poster=v.poster;
+ el.src=v.src;
+ el.addEventListener('play',function(){if(!voice.paused)voice.pause();duck(true)});
+ el.addEventListener('pause',function(){duck(false)});
+ el.addEventListener('ended',function(){duck(false)});
+ box.appendChild(el);clipEl=el;
+ if(v.caption){var cap=document.createElement('p');cap.className='clipcap';cap.textContent=v.caption;box.appendChild(cap)}
+}
+
 /* ---------- letter ---------- */
 var typing=null;
 function resetLetter(){clearTimeout(typing);$('#paper').hidden=true;$('#skip').hidden=true;$('#envelope').hidden=false;$('#env-label').hidden=false}
@@ -534,7 +564,7 @@ function renderCandles(){
 }
 
 /* ---------- navigation ---------- */
-var SCREENS=['title','menu','photos','voices','letter','reasons','cake','end'];
+var SCREENS=['title','menu','photos','voices','letter','reasons','cake','clips','end'];
 function show(id){SCREENS.forEach(function(s){$('#s-'+s).hidden=s!==id});$('#console').scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'})}
 function openLevel(id){
  visited[id]=true;store('np-visited',visited);
@@ -543,7 +573,7 @@ function openLevel(id){
  if(id==='cake')renderCandles();
  show(id);
 }
-$$('[data-back]').forEach(function(b){b.addEventListener('click',function(){if(!voice.paused)voice.pause();renderMenu();show('menu')})});
+$$('[data-back]').forEach(function(b){b.addEventListener('click',function(){if(!voice.paused)voice.pause();if(clipEl&&!clipEl.paused)clipEl.pause();renderMenu();show('menu')})});
 $('#start-btn').addEventListener('click',function(){setMusic(true);burst(50);renderMenu();show('menu')});
 $('#final-btn').addEventListener('click',function(){if(this.disabled)return;$('#finale').textContent=STATE.finale||'';$('#yes-msg').hidden=true;show('end');burst(120)});
 
