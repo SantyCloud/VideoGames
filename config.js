@@ -60,9 +60,9 @@ Te amo tanto amor de mi vida, mi alma gemela, mi único y gran amor, mi corazón
   ],
 
   // Nivel 5 · pastel
-  tituloPastel: "¡Feliz cumpleaños, mi amor!",
-  mensajePastel: "Que este año te traiga todo lo que te mereces, que es muchísimo. Yo me encargo de la parte de hacerte reír.",
+  tituloPastel: "Feliz cumpleaños princesa",
+  mensajePastel: "Que este año nuestra relación se fortalezca más y que todo te salga bien",
 
   // Final
-  mensajeFinal: "Llegaste al final… pero en realidad es apenas el nivel 1 de todo lo que nos falta vivir juntos."
+  mensajeFinal: "Te amo tanto mi amor, me esforzaré cada día más para ser el mejor para ti"
 };
