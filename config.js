@@ -18,6 +18,7 @@ window.CONFIG = {
 
   // Nivel 1 · fotos (archivos dentro de /fotos)
   fotos: [
+    { src: "fotos/3.jpg", caption: "Nuestro mundo" },
     { src: "fotos/1.jpg", caption: "Tus 22" },
     { src: "fotos/2.jpg", caption: "Esa sonrisa" },
   ],
