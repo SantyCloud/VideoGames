@@ -38,12 +38,19 @@ Esta página la hice línea por línea pensando en ti. Cada botón, cada color r
 
   // Nivel 4 · razones (una por línea de la lista)
   razones: [
-    "Tu risa arregla cualquier bug de mi día",
-    "Me apoyas en todo, incluso en mis ideas locas",
-    "Contigo hasta el silencio es cómodo",
-    "Porque eres mi Player 2 favorita",
-    "Por cómo me miras cuando crees que no me doy cuenta",
-    "Porque haces que volver a casa se sienta bonito"
+    "Por ser mi primer y único amor",
+    "Porque hasta lo más mínimo en ti es interesante",
+    "Por tu personalidad tan única",
+    "Por los momentos tan lindos que me haces vivir",
+    "Por lo mucho que te esfuerzas día a día",
+    "Por el respeto que tienes hacia otros",
+    "Por lo inteligente y capaz que eres de todo",
+    "Por tu amabilidad y carisma",
+    "Porque quiero pasar toda mi vida a tu lado",
+    "Porque a tu lado todo es tan seguro",
+    "Por entenderme incluso cuando ni yo me entiendo",
+    "Por tus enojos y berrinches bonitos",
+    "Porque eres la mujer más perfecta del universo",
   ],
 
   // Nivel 5 · pastel
