@@ -32,7 +32,7 @@ window.CONFIG = {
   ],
 
   // Nivel 6 · el video que hizo ella (déjalo vacío si no hay)
-  video: { src: "", poster: "", caption: "" },
+  video: { src: "video/nuestras-partidas.mp4", poster: "video/poster.jpg", caption: "" },
 
   // Nivel 3 · la carta (usa \n para saltos de línea, o `backticks` para escribir varias líneas)
   carta: `Mi vida:
