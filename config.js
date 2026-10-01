@@ -31,7 +31,7 @@ window.CONFIG = {
   ],
 
   // Nivel 3 · la carta (usa \n para saltos de línea, o `backticks` para escribir varias líneas)
-  carta: `Mi vida
+  carta: `Mi vida:
 
 Nunca estuve tan seguro de algo como de lo que siento por ti, escribir nuestra historia juntos ha sido la experiencia más bonita de mi vida.
 
@@ -40,7 +40,7 @@ Mi vida entera te la dedico a ti, eres alguien tan interesante por dentro y por 
 Eres una mujer tan única y especial, definitivamente la mujer de mis sueños
 
 Te amo tanto amor de mi vida, mi alma gemela, mi único y gran amor, mi corazón de melón`,
-  firma: "Tu Player 1",
+  firma: "Tu Santy",
 
   // Nivel 4 · razones (una por línea de la lista)
   razones: [
@@ -60,7 +60,7 @@ Te amo tanto amor de mi vida, mi alma gemela, mi único y gran amor, mi corazón
   ],
 
   // Nivel 5 · pastel
-  tituloPastel: "Feliz cumpleaños princesa",
+  tituloPastel: "¡Feliz cumpleaños, princesa!",
   mensajePastel: "Que este año nuestra relación se fortalezca más y que todo te salga bien",
 
   // Final
