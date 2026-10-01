@@ -18,8 +18,8 @@ window.CONFIG = {
 
   // Nivel 1 · fotos (archivos dentro de /fotos)
   fotos: [
-    { src: "fotos/1.jpg", caption: "" },
-    { src: "fotos/2.jpg", caption: "" },
+    { src: "fotos/1.jpg", caption: "Tus 22" },
+    { src: "fotos/2.jpg", caption: "Esa sonrisa" },
   ],
 
   // Nivel 2 · audios (grábalos con el celular, archivos dentro de /audios)
