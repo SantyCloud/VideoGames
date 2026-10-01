@@ -23,7 +23,11 @@ window.CONFIG = {
 
   // Nivel 2 · audios (grábalos con el celular, archivos dentro de /audios)
   audios: [
-    // { src: "audios/1.m4a", title: "Buenos días, mi amor", date: "25 de septiembre de 2026" },
+    { src: "audios/1.m4a", title: "Mensaje 1", date: "" },
+    { src: "audios/2.m4a", title: "Mensaje 2", date: "" },
+    { src: "audios/3.m4a", title: "Mensaje 3", date: "" },
+    { src: "audios/4.m4a", title: "Mensaje 4", date: "" },
+    { src: "audios/5.m4a", title: "Mensaje 5", date: "" },
   ],
 
   // Nivel 3 · la carta (usa \n para saltos de línea, o `backticks` para escribir varias líneas)
