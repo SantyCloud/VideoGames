@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
+<meta name="robots" content="noindex, noimageindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Nuestra Partida</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -90,7 +91,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-visi
 .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:18px;padding:6px}
 .polaroid{background:#fff;border:3px solid var(--ink);padding:10px 10px 8px;box-shadow:4px 5px 0 var(--accent2);transform:rotate(var(--r,0deg));transition:transform .15s;border-radius:4px}
 .polaroid:hover{transform:rotate(0) scale(1.03)}
-.polaroid img{display:block;width:100%;aspect-ratio:1;object-fit:cover;border:2px solid var(--ink)}
+.polaroid img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center 25%;border:2px solid var(--ink)}
 .polaroid p{margin:8px 0 0;font-family:var(--mono);font-size:20px;line-height:1.1;text-align:center;min-height:22px}
 .empty{border:3px dashed var(--ink2);border-radius:14px;padding:26px;text-align:center;color:var(--ink2);font-family:var(--mono);font-size:22px;line-height:1.2}
 .lightbox{position:fixed;inset:0;background:rgba(91,42,74,.82);display:grid;place-items:center;z-index:50;padding:20px}
