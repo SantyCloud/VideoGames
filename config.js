@@ -36,7 +36,9 @@ window.CONFIG = {
 Nunca estuve tan seguro de algo como de lo que siento por ti, escribir nuestra historia juntos ha sido la experiencia más bonita de mi vida.
 
 Mi vida entera te la dedico a ti, eres alguien tan interesante por dentro y por fuera.
+
 Eres una mujer tan única y especial, definitivamente la mujer de mis sueños
+
 Te amo tanto amor de mi vida, mi alma gemela, mi único y gran amor, mi corazón de melón`,
   firma: "Tu Player 1",
 
