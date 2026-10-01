@@ -211,6 +211,12 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-visi
   .tape .reels{display:none}
   .level{grid-template-columns:52px 1fr}
 }
+@media (max-width:420px){
+  /* el boton de musica va absoluto sobre la barra: hay que reservarle el hueco
+     o un apodo largo queda tapado debajo */
+  .topbar{padding:12px 52px 10px 12px}
+  .pill{font-size:9px;padding:8px 10px}
+}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
