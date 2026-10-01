@@ -31,13 +31,13 @@ window.CONFIG = {
   ],
 
   // Nivel 3 · la carta (usa \n para saltos de línea, o `backticks` para escribir varias líneas)
-  carta: `Hola, mi amor:
+  carta: `Mi vida
 
-Si estás leyendo esto, ya pasaste dos niveles. Te dije que eras buena en esto.
+Nunca estuve tan seguro de algo como de lo que siento por ti, escribir nuestra historia juntos ha sido la experiencia más bonita de mi vida.
 
-Esta página la hice línea por línea pensando en ti. Cada botón, cada color rosa, cada corazón pixelado. Porque tú eres mi persona favorita para jugar la vida.
-
-(Santy: borra este texto y escribe tu carta aquí.)`,
+Mi vida entera te la dedico a ti, eres alguien tan interesante por dentro y por fuera.
+Eres una mujer tan única y especial, definitivamente la mujer de mis sueños
+Te amo tanto amor de mi vida, mi alma gemela, mi único y gran amor, mi corazón de melón`,
   firma: "Tu Player 1",
 
   // Nivel 4 · razones (una por línea de la lista)
