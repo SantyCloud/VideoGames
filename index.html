@@ -168,7 +168,13 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-visi
 .dbtn{font-family:var(--mono);font-size:24px;border:3px solid var(--ink);background:#eee;padding:4px 26px;box-shadow:inset -3px -3px 0 #bbb;position:relative;transition:transform .15s}
 
 /* floating controls */
-.corner{position:absolute;top:10px;right:10px;display:flex;gap:8px;z-index:5}
+.corner{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;align-items:flex-end;gap:8px;z-index:5}
+.corner .volbtn{font-size:8px;letter-spacing:.04em}
+.volpop{position:absolute;top:106px;right:10px;z-index:6;background:var(--panel);border:3px solid var(--ink);border-radius:10px;box-shadow:0 5px 0 var(--ink);padding:10px 12px;display:flex;align-items:center;gap:10px}
+.volpop .volv{font-family:var(--mono);font-size:20px;min-width:30px;text-align:right}
+#vol{-webkit-appearance:none;appearance:none;width:108px;height:20px;background:#fff;border:3px solid var(--ink);border-radius:8px;padding:0;margin:0}
+#vol::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;background:var(--accent);border:3px solid var(--ink);border-radius:4px}
+#vol::-moz-range-thumb{width:14px;height:14px;background:var(--accent);border:3px solid var(--ink);border-radius:4px;box-sizing:border-box}
 .corner button{width:40px;height:40px;border:3px solid var(--ink);border-radius:10px;background:var(--panel);font-family:var(--display);font-size:12px;display:grid;place-items:center}
 .corner button[aria-pressed="true"]{background:var(--mint)}
 .corner .gear{background:var(--butter)}
@@ -245,6 +251,11 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-visi
 
   <div class="corner">
     <button type="button" id="music-btn" aria-pressed="false" aria-label="Música de fondo" title="Música">♪</button>
+    <button type="button" class="volbtn" id="vol-btn" aria-expanded="false" aria-controls="volpop" aria-label="Volumen de la música" title="Volumen">VOL</button>
+  </div>
+  <div class="volpop" id="volpop" hidden>
+    <input id="vol" type="range" min="0" max="100" step="5" aria-label="Volumen de la música">
+    <span class="volv" id="volv">35</span>
   </div>
 
   <!-- TITLE -->
@@ -467,14 +478,16 @@ function renderGallery(){
 $('#lightbox').addEventListener('click',function(){this.hidden=true});
 
 /* ---------- audio ---------- */
-var bgm=$('#bgm'),voice=$('#voice'),musicOn=false,BGV=55,yt=null,ytReady=false,wantPlay=false;
+var bgm=$('#bgm'),voice=$('#voice'),musicOn=false,yt=null,ytReady=false,wantPlay=false;
+var BGV=35,ducked=false;var _v=store('np-vol');if(typeof _v==='number'&&_v>=0&&_v<=100)BGV=_v;
+function volBaja(){return Math.max(0,Math.round(BGV*0.15))}
 function ytId(u){if(!u)return null;var m=String(u).match(/(?:youtu\.be\/|v=|\/embed\/|\/shorts\/|\/live\/)([A-Za-z0-9_-]{11})/);return m?m[1]:(/^[A-Za-z0-9_-]{11}$/.test(u)?u:null)}
 function ytStart(u){var m=String(u||'').match(/[?&]t=(\d+)/);return m?+m[1]:0}
 var VID=ytId(STATE.youtube);
 if(VID){
  window.onYouTubeIframeAPIReady=function(){
   yt=new YT.Player('yt',{width:200,height:200,videoId:VID,playerVars:{autoplay:0,controls:0,loop:1,playlist:VID,playsinline:1,start:ytStart(STATE.youtube)},
-   events:{onReady:function(){ytReady=true;yt.setVolume(BGV);if(wantPlay)yt.playVideo()}}});
+   events:{onReady:function(){ytReady=true;yt.setVolume(ducked?volBaja():BGV);if(wantPlay)yt.playVideo()}}});
  };
  var tag=document.createElement('script');tag.src='https://www.youtube.com/iframe_api';document.head.appendChild(tag);
 }else if(STATE.cancionMp3){bgm.src=STATE.cancionMp3;bgm.volume=BGV/100}
@@ -486,7 +499,11 @@ function setMusic(on){
 }
 $('#music-btn').addEventListener('click',function(){setMusic(!musicOn)});
 function setVol(v){if(VID){if(ytReady)yt.setVolume(v)}else bgm.volume=v/100}
-function duck(on){setVol(on?8:BGV)}
+function aplicarVol(){setVol(ducked?volBaja():BGV)}
+function duck(on){ducked=on;aplicarVol()}
+var volIn=$('#vol'),volOut=$('#volv');volIn.value=BGV;volOut.textContent=BGV;
+volIn.addEventListener('input',function(){BGV=+this.value;volOut.textContent=BGV;store('np-vol',BGV);aplicarVol()});
+$('#vol-btn').addEventListener('click',function(){var p=$('#volpop'),abrir=p.hidden;p.hidden=!abrir;this.setAttribute('aria-expanded',String(abrir))});
 
 var currentTape=null;
 function renderTapes(){
@@ -566,7 +583,7 @@ function renderCandles(){
 
 /* ---------- navigation ---------- */
 var SCREENS=['title','menu','photos','voices','letter','reasons','cake','clips','end'];
-function show(id){SCREENS.forEach(function(s){$('#s-'+s).hidden=s!==id});$('#console').scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'})}
+function show(id){$('#volpop').hidden=true;$('#vol-btn').setAttribute('aria-expanded','false');SCREENS.forEach(function(s){$('#s-'+s).hidden=s!==id});$('#console').scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'})}
 function openLevel(id){
  visited[id]=true;store('np-visited',visited);
  if(id==='letter')resetLetter();
